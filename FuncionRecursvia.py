@@ -2,20 +2,19 @@ import math as m
 
 points = {"X":0,"Y":0,"Z":0}
 
-copy_al = set()
+already_set = set()
 def recursive_board_game(Xi, Xj, Yi, Yj, Zi, Zj, Board, points, already_been):
     r = len(Board) - 1
     c = len(Board[0]) - 1
     
-    # Copia de puntos y posiciones visitadas para evitar mutación
     points = points.copy()
     already_been = already_been.copy()
     
     # ----------- Movimiento de Z
     if not (Zi < 0):
-        if Zj == -1 or Zj > c or (Board[Zi][Zj] == -1 and Zi < r // 2):
+        if Zj == -1 or Zj > c or Board[Zi][Zj] == -1 or Zi < r // 2:
             points["Z"] = 0
-            Zi = None  # Mejor uso de None en lugar de -inf
+            Zi = None
         elif Zi == r // 2:
             if (Zi, Zj) not in already_been:
                 points["Z"] += Board[Zi][Zj]
@@ -24,7 +23,7 @@ def recursive_board_game(Xi, Xj, Yi, Yj, Zi, Zj, Board, points, already_been):
         else:
             if (Zi, Zj) not in already_been:
                 points["Z"] += Board[Zi][Zj]
-                already_been.add((Zi, Zj))
+        already_been.add((Zi, Zj))
 
     # ----------- Movimiento de X
     if not (Xi < 0):
@@ -89,13 +88,12 @@ def recursive_board_game(Xi, Xj, Yi, Yj, Zi, Zj, Board, points, already_been):
             sum(list(recursive_board_game(Xi+1, Xj+1, Yi+1, Yj+1, Zi-1, Zj, Board , points , already_been ).values())),    # X der, Y der, Z recto
             sum(list(recursive_board_game(Xi+1, Xj+1, Yi+1, Yj+1, Zi-1, Zj+1, Board , points , already_been ).values()))   # X der, Y der, Z der
         )}
-        
         return maxim
 
 matriz = [
     [0, 9, 1, 10, 0],
-    [-1, 1, 5, 25, 5],
-    [1, -1, 1, 5, 7],
+    [-1, 1, 5, 1, 5],
+    [1, 5, 1, 5, 7],
     [5, 5, 5, 15, 2],
     [55, 3, 0, 4, 1]
 ]
@@ -104,5 +102,5 @@ matriz = [
 #Y : 30
 #Total : 40
 
-print(recursive_board_game(0,0,0,4,4,2,matriz,points, copy_al))
+print(recursive_board_game(0,0,0,4,4,2,matriz,points, already_set))
 
