@@ -27,21 +27,18 @@ def reliquias_sal(matriz, i, j, r , c):
         return max_valor + matriz[i][j], camino
         
 def reliquias_ind_mar(matriz, i, j, k, R, C, coordenadas_sal):
-    if any(coord in coordenadas_sal for coord in [(i, j), (i, k)]):
-        return 0 # Celda inválida
+    if i>= R or j>= C or k>=C:
+        return -m.inf
     if matriz[i][j] == -1 or matriz[i][k] == -1:
         return -m.inf  # Celda con maldición
 
-    if i == R // 2:
-        return matriz[i][j] + matriz[i][k]
 
-    max_reliquias = -m.inf
-    return max_reliquias            
     
 def reliquias(matriz, R, C):
     reliquias_saal, coordenadas_sal = reliquias_sal(matriz, R - 1, C // 2, R, C)
-    #reliquias_ind_mare = reliquias_ind_mar(matriz, 0, 0, C - 1, R, C, coordenadas_sal) 
-    return reliquias_saal
+    coordenada_en_r_medios = coordenadas_sal[0]
+    reliquias_ind_mare = reliquias_ind_mar(matriz, 0, 0, C - 1, R, C, coordenada_en_r_medios) 
+    return reliquias_saal + reliquias_ind_mare
     
 # Ejemplo de uso (mismo que antes)
 matriz = [
@@ -95,7 +92,5 @@ def main():
     elif opcion == 3:
         print(reliquias(matriz, R, C))
     
-    
-
 if __name__ == "__main__":
     main()
