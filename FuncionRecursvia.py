@@ -94,8 +94,8 @@ def recursive_board_game(Xi, Xj, Yi, Yj, Zi, Zj, Board, points, already_been):
 
 matriz = [
     [0, 9, 1, 10, 0],
-    [-1, 5, 5, 25, 5],
-    [1, 5, 1, 5, 7],
+    [-1, 1, 5, 25, 5],
+    [1, -1, 1, 5, 7],
     [5, 5, 5, 15, 2],
     [55, 3, 0, 4, 1]
 ]
