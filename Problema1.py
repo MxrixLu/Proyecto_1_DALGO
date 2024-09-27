@@ -36,7 +36,6 @@ def resolver_piramide_con_muertes_optimizado(M):
             else: 
                 dp_indiana[i][j] = -math.inf
                 dp_marion[i][j] = -math.inf
-                
     # DP para Sallah: se mueve hacia arriba
     for i in range(R-2, R//2 - 1, -1):
         for j in range(C):
@@ -67,12 +66,14 @@ def resolver_piramide_con_muertes_optimizado(M):
     for j in range(C):
         for k in range(C):
             for l in range(C):
+                if M[i][j] == -1 or M[i][k] == -1 or M[i][l] == -1:
+                    continue
                 # Verificar si los tres caen en la misma celda
                 if j == k == l:
                     # Si todos caen en la misma celda
                     max_reliquias = max(
                         max_reliquias, 
-                        max_relics_indiana[j] + max_relics_marion[k] + max_relics_sallah[l] - 2*M[R//2][j]
+                        max_relics_indiana[j] + max_relics_marion[k] + max_relics_sallah[l] - M[R//2][j]
                     )
                 else:
                     # Para el caso general donde no se encuentran todos en la misma celda
