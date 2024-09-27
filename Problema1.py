@@ -3,6 +3,8 @@ import math
 def resolver_piramide_con_muertes_optimizado(M):
     R = len(M)
     C = len(M[0])
+    
+    posiciones_mar_ind = set()
 
     # Inicializar las tablas DP con -inf usando listas
     dp_indiana = [[-math.inf for _ in range(C)] for _ in range(R)]
@@ -33,9 +35,11 @@ def resolver_piramide_con_muertes_optimizado(M):
                     dp_marion[i][j] = max(dp_marion[i][j], dp_marion[i-1][j] + M[i][j])
                 if j < C-1 and dp_marion[i-1][j+1] != -math.inf:
                     dp_marion[i][j] = max(dp_marion[i][j], dp_marion[i-1][j+1] + M[i][j])
+
             else: 
                 dp_indiana[i][j] = -math.inf
                 dp_marion[i][j] = -math.inf
+                
     # DP para Sallah: se mueve hacia arriba
     for i in range(R-2, R//2 - 1, -1):
         for j in range(C):
@@ -69,20 +73,19 @@ def resolver_piramide_con_muertes_optimizado(M):
                 if M[i][j] == -1 or M[i][k] == -1 or M[i][l] == -1:
                     continue
                 # Verificar si los tres caen en la misma celda
-                if j == k == l:
+                if j == k == l or j == k :
                     # Si todos caen en la misma celda
                     max_reliquias = max(
                         max_reliquias, 
-                        max_relics_indiana[j] + max_relics_marion[k] + max_relics_sallah[l] - M[R//2][j]
-                    )
-                else:
+                        max_relics_indiana[j] + max_relics_marion[k] + max_relics_sallah[l] 
+                    ) 
                     # Para el caso general donde no se encuentran todos en la misma celda
-                    if j != k and k != l and j != l:  # Indiana, Marion y Sallah en diferentes celdas
-                        max_reliquias = max(
-                            max_reliquias, 
-                            max_relics_indiana[j] + max_relics_marion[k] + max_relics_sallah[l]
-                        )
-
+                elif j != k and k != l and j != l:  # Indiana, Marion y Sallah en diferentes celdas
+                    max_reliquias = max(
+                        max_reliquias, 
+                        max_relics_indiana[j] + max_relics_marion[k] + max_relics_sallah[l]
+                    ) 
+    
     return max_reliquias
 
 def leer_casos_desde_archivo(nombre_archivo):
